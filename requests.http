@@ -1,0 +1,197 @@
+### ============================================
+### Тестовые запросы для API пекарни
+### Запуск: клик на ▷ слева от каждого запроса
+### ============================================
+
+### 1. USERS — Пользователи
+### ============================================
+
+### Получить всех пользователей
+GET http://localhost:8080/api/users
+
+### Получить пользователя по id
+GET http://localhost:8080/api/users/1
+
+### Создать пользователя — Alice
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+
+### Создать пользователя — Bob
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Bob",
+  "email": "bob@example.com"
+}
+
+### Обновить пользователя
+PATCH http://localhost:8080/api/users/1
+Content-Type: application/json
+
+{
+  "name": "Alice Updated"
+}
+
+### Удалить пользователя
+DELETE http://localhost:8080/api/users/2
+
+### 2. INGREDIENTS — Ингредиенты
+### ============================================
+
+### Получить все ингредиенты
+GET http://localhost:8080/api/ingredients
+
+### Получить ингредиент по id
+GET http://localhost:8080/api/ingredients/1
+
+### Создать ингредиент — Мука
+POST http://localhost:8080/api/ingredients
+Content-Type: application/json
+
+{
+  "name": "Flour",
+  "unit": "g",
+  "stock": 10000
+}
+
+### Создать ингредиент — Сахар
+POST http://localhost:8080/api/ingredients
+Content-Type: application/json
+
+{
+  "name": "Sugar",
+  "unit": "g",
+  "stock": 5000
+}
+
+### Обновить ингредиент
+PATCH http://localhost:8080/api/ingredients/1
+Content-Type: application/json
+
+{
+  "stock": 8000
+}
+
+### Удалить ингредиент
+DELETE http://localhost:8080/api/ingredients/3
+
+### 3. RECIPES — Рецептуры
+### ============================================
+
+### Получить все рецептуры
+GET http://localhost:8080/api/recipes
+
+### Получить рецептуру по id
+GET http://localhost:8080/api/recipes/1
+
+### Создать рецептуру — Хлеб
+POST http://localhost:8080/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Bread",
+  "items": [
+    { "ingredient": { "id": 1 }, "quantity": 500 },
+    { "ingredient": { "id": 2 }, "quantity": 100 }
+  ]
+}
+
+### Обновить рецептуру
+PATCH http://localhost:8080/api/recipes/1
+Content-Type: application/json
+
+{
+  "name": "Bread Updated"
+}
+
+### Удалить рецептуру
+DELETE http://localhost:8080/api/recipes/1
+
+### 4. PRODUCTION BATCHES — Производственные партии
+### ============================================
+
+### Получить все партии
+GET http://localhost:8080/api/production-batches
+
+### Получить партию по id
+GET http://localhost:8080/api/production-batches/1
+
+### Создать партию на 10 хлебов
+POST http://localhost:8080/api/production-batches
+Content-Type: application/json
+
+{
+  "recipe": { "id": 1 },
+  "quantity": 10
+}
+
+### Обновить партию
+PATCH http://localhost:8080/api/production-batches/1
+Content-Type: application/json
+
+{
+  "quantity": 15
+}
+
+### Удалить партию
+DELETE http://localhost:8080/api/production-batches/2
+
+### 5. BAKING REQUESTS — Заявки на выпечку
+### ============================================
+
+### Получить все заявки
+GET http://localhost:8080/api/baking-requests
+
+### Получить заявку по id
+GET http://localhost:8080/api/baking-requests/1
+
+### Создать заявку от Alice на 5 хлебов
+POST http://localhost:8080/api/baking-requests
+Content-Type: application/json
+
+{
+  "user": { "id": 1 },
+  "recipe": { "id": 1 },
+  "quantity": 5
+}
+
+### Обновить заявку
+PATCH http://localhost:8080/api/baking-requests/1
+Content-Type: application/json
+
+{
+  "status": "READY"
+}
+
+### Удалить заявку
+DELETE http://localhost:8080/api/baking-requests/2
+
+### 6. BUSINESS OPERATIONS — Бизнес-операции
+### ============================================
+
+### Операция 1. Запуск партии со списанием ингредиентов
+POST http://localhost:8080/api/business/start-batch/1
+
+### Операция 2. Завершение партии
+POST http://localhost:8080/api/business/complete-batch/1
+
+### Операция 3. Превратить заявку в партию
+POST http://localhost:8080/api/business/request-to-batch/1
+
+### Операция 4. Массовое планирование партии
+POST http://localhost:8080/api/business/plan-batch
+Content-Type: application/json
+
+{
+  "recipeId": 1,
+  "quantity": 20
+}
+
+### Операция 5. Закрытие партии с обновлением заявок
+POST http://localhost:8080/api/business/close-batch/1

@@ -42,10 +42,10 @@ public class IngredientService {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Ингредиент не найден: " + id);
         }
-        // Проверяем, не используется ли ингредиент в рецептурах
         boolean usedInRecipe = recipeRepository.findAll().stream()
                 .flatMap(r -> r.getItems().stream())
-                .anyMatch(item -> item.getIngredientId().equals(id));
+                .anyMatch(item -> item.getIngredient() != null
+                        && item.getIngredient().getId().equals(id));
         if (usedInRecipe) {
             throw new RuntimeException(
                     "Нельзя удалить ингредиент id=" + id + ": он используется в рецептурах");

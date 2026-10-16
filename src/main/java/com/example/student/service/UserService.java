@@ -41,9 +41,8 @@ public class UserService {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Пользователь не найден: " + id);
         }
-        // Проверяем, есть ли у пользователя заявки
         boolean hasRequests = requestRepository.findAll().stream()
-                .anyMatch(r -> r.getUserId() != null && r.getUserId().equals(id));
+                .anyMatch(r -> r.getUser() != null && r.getUser().getId().equals(id));
         if (hasRequests) {
             throw new RuntimeException(
                     "Нельзя удалить пользователя id=" + id + ": у него есть заявки на выпечку");

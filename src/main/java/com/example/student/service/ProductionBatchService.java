@@ -1,6 +1,7 @@
 package com.example.student.service;
 
 import com.example.student.model.ProductionBatch;
+import com.example.student.model.Recipe;
 import com.example.student.repository.BakingRequestRepository;
 import com.example.student.repository.ProductionBatchRepository;
 import com.example.student.repository.RecipeRepository;
@@ -30,9 +31,12 @@ public class ProductionBatchService {
     }
 
     public ProductionBatch create(ProductionBatch batch) {
-        if (batch.getRecipeId() == null || !recipeRepository.existsById(batch.getRecipeId())) {
-            throw new RuntimeException("Рецептура не найдена: " + batch.getRecipeId());
+        if (batch.getRecipe() == null || batch.getRecipe().getId() == null
+                || !recipeRepository.existsById(batch.getRecipe().getId())) {
+            throw new RuntimeException("Рецептура не найдена");
         }
+        Recipe recipe = recipeRepository.findById(batch.getRecipe().getId()).get();
+        batch.setRecipe(recipe);
         batch.setId(null);
         if (batch.getStatus() == null) batch.setStatus("PLANNED");
         return repository.save(batch);
@@ -49,9 +53,8 @@ public class ProductionBatchService {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Партия не найдена: " + id);
         }
-        // Проверяем, ссылается ли на партию какая-либо заявка
         boolean usedInRequest = requestRepository.findAll().stream()
-                .anyMatch(r -> r.getBatchId() != null && r.getBatchId().equals(id));
+                .anyMatch(r -> r.getBatch() != null && r.getBatch().getId().equals(id));
         if (usedInRequest) {
             throw new RuntimeException(
                     "Нельзя удалить партию id=" + id + ": на неё ссылаются заявки на выпечку");

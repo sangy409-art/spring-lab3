@@ -1,19 +1,25 @@
 package com.example.student.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "ingredients")
 public class Ingredient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String unit;
+
+    @Column(nullable = false)
     private double stock;
 
     public Ingredient() {}
-
-    public Ingredient(Long id, String name, String unit, double stock) {
-        this.id = id;
-        this.name = name;
-        this.unit = unit;
-        this.stock = stock;
-    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

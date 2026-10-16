@@ -1,18 +1,38 @@
 package com.example.student.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "recipe_items")
 public class RecipeItem {
-    private Long ingredientId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id", nullable = false)
+    private Recipe recipe;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_id", nullable = false)
+    private Ingredient ingredient;
+
+    @Column(nullable = false)
     private double quantity;
 
     public RecipeItem() {}
 
-    public RecipeItem(Long ingredientId, double quantity) {
-        this.ingredientId = ingredientId;
-        this.quantity = quantity;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getIngredientId() { return ingredientId; }
-    public void setIngredientId(Long ingredientId) { this.ingredientId = ingredientId; }
+    public Recipe getRecipe() { return recipe; }
+    public void setRecipe(Recipe recipe) { this.recipe = recipe; }
+
+    public Ingredient getIngredient() { return ingredient; }
+    public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
 
     public double getQuantity() { return quantity; }
     public void setQuantity(double quantity) { this.quantity = quantity; }
