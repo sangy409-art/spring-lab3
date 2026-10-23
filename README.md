@@ -134,43 +134,9 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO bakery_user;
 ```
 
-### Конфигурация `.env`
 
-Создайте файл `.env` в корне проекта:
 
-```
-DB_URL=jdbc:postgresql://localhost:5432/bakery
-DB_USERNAME=bakery_user
-DB_PASSWORD=bakery_pass
-```
 
-### Запуск
-
-```bash
-./mvnw spring-boot:run
-```
-
-Сервер стартует на `http://localhost:8080`.
-
-Таблицы создаются автоматически Hibernate (`spring.jpa.hibernate.ddl-auto=update`).
-
----
-
-## Тестирование
-
-Файл `requests.http` в корне проекта содержит 30 запросов:
-- CRUD для всех 5 сущностей (25 запросов).
-- 5 бизнес-операций.
-
-**Запуск в IntelliJ IDEA:** откройте `requests.http` и кликните ▷ слева от нужного запроса.
-
-**Рекомендуемая последовательность для проверки:**
-1. Создать пользователя.
-2. Создать 2 ингредиента.
-3. Создать рецептуру с этими ингредиентами.
-4. Создать партию и заявку.
-5. Выполнить бизнес-операции (`start-batch`, `request-to-batch`, `close-batch`).
-6. Проверить, что данные в БД изменились согласованно.
 
 ---
 
